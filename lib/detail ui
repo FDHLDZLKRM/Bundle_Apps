@@ -1,0 +1,63 @@
+    body : Form(
+          key: _paykey,
+          child : Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Payment Amount: RM $harga \nBooking Number : $tracknum',
+                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 16.0),
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Card Number',
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      cardNumber = value;
+                    });
+                  },
+                ),
+                SizedBox(height: 8.0),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Expiry Date',
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            expiryDate = value;
+                          });
+                        },
+                      ),
+                    ),
+                    SizedBox(width: 8.0),
+                    Expanded(
+                      flex: 1,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          labelText: 'CVV',
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            cvv = value;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+
+                ),
+                SizedBox(height: 16.0),
+              ],
+
+            ),
+
+          ),
+
+        ),

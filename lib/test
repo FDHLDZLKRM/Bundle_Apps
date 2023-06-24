@@ -1,0 +1,200 @@
+import 'package:flutter/material.dart';
+import 'package:shrine/cart_page.dart';
+import 'package:shrine/model/product.dart';
+
+class Details extends StatefulWidget {
+  final Product product;
+
+  Details({required this.product});
+
+  @override
+  _DetailsState createState() => _DetailsState();
+}
+
+class _DetailsState extends State<Details> {
+  List<Product> cartItems = [];
+
+  @override
+  Widget build(BuildContext context) {
+    final imageWidget = Image.asset(
+      widget.product.assetName,
+      package: widget.product.assetPackage,
+      fit: BoxFit.cover,
+    );
+    List<int> sizeList = [7, 8, 9, 10];
+    List<Color> colorsList = [Colors.black, Colors.blue, Colors.red];
+
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text('${widget.product.name}'),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.shopping_cart),
+              tooltip: 'Show Snackbar',
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Add Cart Button')),
+                );
+              },
+            ),
+          ],
+          backgroundColor: const Color(0xff4626c5),
+        ),
+        body: Column(
+          children: <Widget>[
+            Expanded(
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: Stack(
+                      children: <Widget>[
+                        Positioned.fill(
+                          child: AspectRatio(
+                            child: imageWidget,
+                            aspectRatio: 33 / 9,
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: RawMaterialButton(
+                            onPressed: () {},
+                            child: const Icon(
+                              Icons.crop_rotate,
+                              color: Colors.blue,
+                            ),
+                            shape: const CircleBorder(),
+                            elevation: 2.0,
+                            fillColor: Colors.white,
+                            padding: const EdgeInsets.all(3.0),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Expanded(
+              child: Container(
+                decoration: const BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      offset: Offset(0, -1),
+                      blurRadius: 5,
+                      color: Colors.black12,
+                    )
+                  ],
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(0),
+                    topRight: Radius.circular(0),
+                  ),
+                  color: Colors.white,
+                ),
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                        padding:
+                            const EdgeInsets.only(top: 25, left: 25, right: 25),
+                        child: ListView(
+                          scrollDirection: Axis.vertical,
+                          children: <Widget>[
+                            Text(
+                              '${widget.product.name}',
+                              style: const TextStyle(fontSize: 21),
+                            ),
+                            const SizedBox(height: 3),
+                            Text(
+                              'Price: RM ${widget.product.price}',
+                              style: const TextStyle(
+                                  fontSize: 21, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 15),
+                            Row(
+                              children: <Widget>[
+                                const Text(
+                                  "Size:",
+                                  style: TextStyle(fontSize: 21),
+                                ),
+                                const SizedBox(width: 15),
+                                for (var item in sizeList)
+                                  Container(
+                                    margin:
+                                        const EdgeInsets.symmetric(horizontal: 3.0),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    height: 25,
+                                    width: 25,
+                                    child: Text("$item"),
+                                  ),
+                              ],
+                            ),
+                            const SizedBox(height: 15),
+                            Row(
+                              children: <Widget>[
+                                const Text(
+                                  "Colors:",
+                                  style: TextStyle(fontSize: 21),
+                                ),
+                                const SizedBox(width: 15),
+                                for (var item in colorsList)
+                                  Container(
+                                    margin:
+                                        const EdgeInsets.symmetric(horizontal: 5.0),
+                                    height: 25,
+                                    width: 25,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: item,
+                                    ),
+                                  ),
+                              ],
+                            ),
+                            const SizedBox(height: 15),
+                            const Text(
+                              "Description",
+                              style: TextStyle(fontSize: 21),
+                            ),
+                            const SizedBox(height: 3),
+                            Text(
+                              '${widget.product.description}',
+                              style: const TextStyle(fontSize: 17),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    FloatingActionButton.extended(
+                      onPressed: () {
+                        setState(() {
+                          cartItems.add(widget.product);
+                        });
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CartPage(
+                              cartItems: cartItems,
+                            ),
+                          ),
+                        );
+                      },
+                      extendedPadding: const EdgeInsets.all(120),
+                      backgroundColor: Colors.indigo,
+                      label: const Text("Add to Cart"),
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
